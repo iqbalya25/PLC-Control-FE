@@ -9,7 +9,7 @@ const Plccontrol: React.FC = () => {
 
   useEffect(() => {
     fetchLampStatus();
-    const interval = setInterval(fetchLampStatus, 5000); // Poll every 5 seconds
+    const interval = setInterval(fetchLampStatus, 5000); 
     return () => clearInterval(interval);
   }, []);
 
@@ -32,9 +32,9 @@ const Plccontrol: React.FC = () => {
   const handleCommand = async (command: "ON" | "OFF") => {
     setIsLoading(true);
     try {
-      await sendCommand(command);
+      const response = await sendCommand(command);
+      console.log(`Command ${command} sent, response:`, response);
       await fetchLampStatus();
-      console.log(command);
     } catch (error) {
       console.error(`Failed to send ${command} command:`, error);
       setError(`Failed to send ${command} command`);
@@ -61,14 +61,14 @@ const Plccontrol: React.FC = () => {
                 <div className="flex space-x-4">
                   <button
                     onClick={() => handleCommand("ON")}
-                    disabled={isLoading}
+                    disabled={isLoading || lampStatus}
                     className="px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-600 focus:outline-none focus:shadow-outline disabled:opacity-50"
                   >
                     Turn ON
                   </button>
                   <button
                     onClick={() => handleCommand("OFF")}
-                    disabled={isLoading}
+                    disabled={isLoading || !lampStatus}
                     className="px-4 py-2 font-bold text-white bg-red-500 rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline disabled:opacity-50"
                   >
                     Turn OFF

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080/api/v1/vfdcontrol",
+  baseURL: "http://localhost:8081/api/plc", 
   headers: {
     "Content-Type": "application/json",
   },
@@ -9,9 +9,9 @@ const api = axios.create({
 
 export const getLampStatus = async () => {
   try {
-    const response = await api.get("/lampstatus");
+    const response = await api.get("/status");
     console.log("Lamp status response:", response.data);
-    return { isOn: response.data.on };
+    return { isOn: response.data.status === "ON" };
   } catch (error) {
     console.error("Error getting lamp status:", error);
     throw error;
@@ -20,7 +20,7 @@ export const getLampStatus = async () => {
 
 export const sendCommand = async (command: "ON" | "OFF") => {
   try {
-    const response = await api.post("/button", { command });
+    const response = await api.post("/command", { command });
     return response.data;
   } catch (error) {
     console.error("Error sending command:", error);
