@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://plc-control-be-server-jvczhicy6q-uc.a.run.app",
+  baseURL: "https://plc-control-be-server-jvczhicy6q-uc.a.run.app/api/plc",
   headers: {
     "Content-Type": "application/json",
   },
